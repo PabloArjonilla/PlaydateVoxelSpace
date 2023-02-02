@@ -1,3 +1,5 @@
+import "voxel/mapData/mapDataPerlin"
+
 local patterns =
 {
 	{ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },
@@ -47,16 +49,15 @@ local perlin_z = math.random() * 100
 local scale = 10
 
 
-local screenShot = {}
-for y = 1, 240, 1 do
-    local percentage = y * 100 / 240
-    screenShot[y] = {}
-    for x = 1, 400, 1 do
-        screenShot[y][x] = percentage / 100
-    end
-end
 
+local mapHeight = 240
+local mapWidth = 400
+local perlinScale = 10
+local perlinRepeat = 0
+local perlinOctaves = 6
+local perlinPersistence = 0.1
 
+local screenShot = MapDataPerlin(mapHeight,mapWidth, perlinScale, perlinRepeat, perlinOctaves, perlinPersistence).values
 
 
 function playdate.update()
@@ -67,14 +68,12 @@ function playdate.update()
     for y = 0, 239, 1 do
 
 	    local px = perlin_x
-	    py += 0.1
+	   
 
 	    for x = 0, 399, 1 do
-	        px += 0.1
-
-	        --local p = gfx.perlin(px / scale, py / scale, perlin_z / scale, 0, 6, 0.4)
-            
+	      
             local p = screenShot[y+1][x+1]
+	
 	        gfx.setPattern(patterns[math.ceil(p * #patterns)])
 	        gfx.fillRect(x, y, 1, 1)
 	    end

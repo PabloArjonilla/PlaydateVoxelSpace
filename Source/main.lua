@@ -24,7 +24,7 @@ local perlinPersistence = 0.1
 
 local mapHeight = 240
 local mapWidth = 400
-local perlinScale = 3
+local perlinScale = 10
 local perlinRepeat = 0
 local perlinOctaves = 6
 local perlinPersistence = 0.1
@@ -35,5 +35,4 @@ pd.stop()
 
 if playdate.update == nil then
 	playdate.update = function() end
-	playdate.graphics.drawText("Please uncomment one of the import statements.", 15, 100)
 end

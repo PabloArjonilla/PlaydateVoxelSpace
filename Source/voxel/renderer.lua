@@ -1,9 +1,7 @@
-
 import "CoreLibs/graphics"
+
 pd = playdate
 gfx = pd.graphics
-
-gfx = playdate.graphics
 
 local patterns =
 {
@@ -51,14 +49,3 @@ function render(mockImage)
 	    end
     end
 end
-
---[[
-local screenShot = {}
-for y = 1, 240, 1 do
-    local percentage = y * 100 / 240
-    screenShot[y] = {}
-    for x = 1, 400, 1 do
-        screenShot[y][x] = percentage / 100
-    end
-end
-]]
