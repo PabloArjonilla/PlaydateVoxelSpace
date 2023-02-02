@@ -1,0 +1,7 @@
+name=PlaydateVoxelSpace
+author=Pablo_arj
+description= Implementation of the voxel space engine for the Playdate
+bundleID=es.pmac.PlaydateVoxelSpace
+version=1.0
+buildNumber=100
+imagePath=SystemAssets
