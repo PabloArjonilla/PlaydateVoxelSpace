@@ -1,6 +1,3 @@
-pd = playdate
-gfx = pd.graphics
-
 local patterns =
 {
 	{ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },
@@ -38,6 +35,7 @@ local patterns =
 	{ 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff }
 };
 
+gfx = playdate.graphics
 
 local s,ms = playdate.getSecondsSinceEpoch()
 math.randomseed(ms,s)
@@ -45,23 +43,42 @@ math.randomseed(ms,s)
 local perlin_x = math.random() * 100
 local perlin_y = math.random() * 100
 local perlin_z = math.random() * 100
-local perlinScale = 6
+
+local scale = 10
 
 
-
-if playdate.update == nil then
-	playdate.update = function() end
-	
-    for y = 1, 240, 1 do
-        perlin_y += 0.1
-        for x = 1, 400, 1 do
-            perlin_x += 0.1
-            p = playdate.graphics.perlin(perlin_x / perlinScale, perlin_y / perlinScale, perlin_z / perlinScale, 0, 6, 0.4)
-            gfx.setPattern(patterns[math.ceil(p * #patterns)])
-	        gfx.fillRect(x, y, 1, 1)
-        end
-
+local screenShot = {}
+for y = 1, 240, 1 do
+    local percentage = y * 100 / 240
+    screenShot[y] = {}
+    for x = 1, 400, 1 do
+        screenShot[y][x] = percentage / 100
     end
-    
+end
 
+
+
+
+function playdate.update()
+
+    gfx.setColor(gfx.kColorBlack)
+    local py = perlin_y
+
+    for y = 0, 239, 1 do
+
+	    local px = perlin_x
+	    py += 0.1
+
+	    for x = 0, 399, 1 do
+	        px += 0.1
+
+	        --local p = gfx.perlin(px / scale, py / scale, perlin_z / scale, 0, 6, 0.4)
+            
+            local p = screenShot[y+1][x+1]
+	        gfx.setPattern(patterns[math.ceil(p * #patterns)])
+	        gfx.fillRect(x, y, 1, 1)
+	    end
+	    
+    end
+    playdate.stop()
 end
