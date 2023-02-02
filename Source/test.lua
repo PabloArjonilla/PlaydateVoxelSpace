@@ -79,5 +79,4 @@ function playdate.update()
 	    end
 	    
     end
-    playdate.stop()
 end

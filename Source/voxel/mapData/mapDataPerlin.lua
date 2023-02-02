@@ -11,7 +11,7 @@ local perlin_z = math.random() * 100
 
 
 function MapDataPerlin:init(mapHeight, mapWidth, perlinScale, perlinRepeat, perlinOctaves, perlinPersistence)
-    
+    gfx.clear(gfx.kColorWhite)
     local py = perlin_y
     self.values = {}
     for y = 1, mapHeight, 1 do
