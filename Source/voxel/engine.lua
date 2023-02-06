@@ -58,19 +58,42 @@ local cameraHorizon = 60    -- offset of the horizon position (looking up-down)
 local cameraRoll = 0          -- roll offset when rolling the camera
 local cameraDrawDistance = 200 -- distance of the camera looking forward
 local cameraFOV = 1.5 * 3.141592   -- TODO: Fix working with radians, check clockwise, check this more/less than 90 camera angle (radians, clockwise)
+ 
+function pd.upButtonDown()
+    cameraX += math.cos(cameraFOV);
+    cameraY += math.sin(cameraFOV);
+end
+
+function pd.downButtonDown()
+    cameraX -= math.cos(cameraFOV);
+    cameraY -= math.sin(cameraFOV);
+end
+
+
+function pd.leftButtonDown()
+    cameraFOV -= 0.01;
+end
+
+
+function pd.rightButtonDown()
+    cameraFOV += 0.01;
+end
 
 -----------------
 ---- ENGINE SETUP
 -----------------
 local scaleFactor = 70
-local pattern = {{8/9, 4/9, 7/9, 3/9},
-{2/9, 6/9, 1/9, 5/9},
-{7/9, 3/9, 8/9, 4/9},
-{1/9, 5/9, 2/9, 6/9}}
+local pattern = {{16/17,  8/17, 14/17,  6/17},
+{ 4/17, 12/17,  2/17, 10/17},
+{13/17,  5/17, 15/17,  7/17},
+{ 1/17,  9/17,  3/17, 11/17}}
 
 local patternHeight = #pattern
 local patternWidth = #pattern[1]
 
+--pd.display.getWidth() 
+--local sinangle = math.sin(cameraFOV)
+--local cosangle = math.cos(cameraFOV)
 
 function renderFrame ()
 
@@ -98,12 +121,12 @@ function renderFrame ()
             yRay += yDelta
 
             local sampedPixel = map[math.floor(yRay)][math.floor(xRay)]
-
-            local projectedHeight = math.floor((((cameraZ - (sampedPixel*255)) / z * scaleFactor) + cameraHorizon))
+            local projectedHeight = math.floor((cameraZ - (sampedPixel*100)) / z * scaleFactor + cameraHorizon)
 
             if projectedHeight < 0 then
                 projectedHeight = 0
             elseif projectedHeight > pd.display.getHeight() then
+                
                 projectedHeight = pd.display.getHeight()
             end            
             
@@ -111,21 +134,23 @@ function renderFrame ()
 
                 for  y = projectedHeight, maxHeight, 1 do
             
-                    if y >= 1 then
+                    if y >= 0 then
                        
-                       --[[
+                    
                         if sampedPixel < pattern[y%patternHeight+1][i%patternWidth+1] then
                             gfx.setColor(gfx.kColorBlack)
                         else
                             gfx.setColor(gfx.kColorWhite)
                         end
-                        gfx.drawPixel(i+1,y)
-                        ]]
+                        gfx.drawPixel(i,y)
                     end
+                    
                 end
                 maxHeight = projectedHeight
             end
 	    end
     end
+    cameraX += math.cos(cameraFOV);
+    cameraY += math.sin(cameraFOV);
 end
 

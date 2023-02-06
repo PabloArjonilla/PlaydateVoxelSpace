@@ -17,5 +17,7 @@ pd.display.setScale(1)
 -- RENDER THE IMAGE
 function pd.update()
 	renderFrame()
-	pd.stop()
+	--gfx.clear(gfx.kColorWhite)
+	--gfx.drawText(pd.getSecondsSinceEpoch(),0,0)
+	pd.drawFPS(0,20)
 end
